@@ -1,0 +1,19 @@
+# cloudbuild.yaml
+steps:
+  # Step 1: Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-app-repo/hello-app:latest'
+      - '.'
+
+  # Step 2: Push the container image to our private warehouse (Artifact Registry)
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-app-repo/hello-app:latest'
+
+# This last part tells Cloud Build what image was just built
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-app-repo/hello-app:latest'
